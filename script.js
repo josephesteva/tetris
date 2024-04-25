@@ -40,15 +40,27 @@ const drawPiece = () => {
 			let pixel = document.getElementById(boardRow + '-' + j)
 			console.log(pixel);
 			pixel.classList.add('red')
-			if (boardRow >= 2) {
-				document.getElementById(boardRow - 2 + '-' + j).classList.remove('red')
-			}
+			// if (boardRow >= 2) {
+			// 	document.getElementById(boardRow - 2 + '-' + j).classList.remove('red')
+			// }
 		}
 	}
 }
 
 function useGravity() {
 	game.positionY++;
+}
+
+function removePiece() {
+	let piece = game.currentPiece;
+	for (i = 0; i < piece.length; i++) {
+		for (j = 0; j < piece[i].length; j++) {
+			let boardRow = i + game.positionY;
+			let pixel = document.getElementById(boardRow + '-' + j)
+			console.log(pixel);
+			pixel.classList.remove('red')
+		}
+	}
 }
 
 function advanceTime() {
@@ -59,6 +71,7 @@ function advanceTime() {
 // Time
 setInterval(() => {
 	if (!game.playing) return;
+	removePiece()
 	useGravity()
 	drawPiece()
 	advanceTime()
