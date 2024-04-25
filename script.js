@@ -5,7 +5,8 @@ let game = {
 	currentPiece: [
 		[1, 1],
 		[1, 1],
-	]
+	],
+	positionY: 0,
 }
 
 // DOM elements
@@ -35,25 +36,33 @@ const drawPiece = () => {
 	let piece = game.currentPiece;
 	for (i = 0; i < piece.length; i++) {
 		for (j = 0; j < piece[i].length; j++) {
-			let pixel = document.getElementById(i + '-' + j)
+			let boardRow = i + game.positionY;
+			let pixel = document.getElementById(boardRow + '-' + j)
 			console.log(pixel);
 			pixel.classList.add('red')
+			if (boardRow >= 2) {
+				document.getElementById(boardRow - 2 + '-' + j).classList.remove('red')
+			}
 		}
 	}
 }
 
+function useGravity() {
+	game.positionY++;
+}
+
 function advanceTime() {
 	timer.innerText = game.timer++;
+	console.log(game.positionY);
 }
 
 // Time
 setInterval(() => {
 	if (!game.playing) return;
-	drawPiece
+	useGravity()
+	drawPiece()
 	advanceTime()
 }, 1000)
 
 drawPiece()
 
-document.getElementById('3-6').classList.add('red')
-document.getElementById('5-2').classList.add('red')
