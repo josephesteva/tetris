@@ -1,7 +1,11 @@
 // GAME STATE
 let game = {
 	playing: false,
-	timer: 0
+	timer: 0,
+	currentPiece: [
+		[1, 1],
+		[1, 1],
+	]
 }
 
 // DOM elements
@@ -16,24 +20,40 @@ playBTN.addEventListener('click', () => {
 })
 
 // Game Board
-for (let i = 0; i < 30; i++) {
+for (let i = 0; i < 24; i++) {
 	let row = document.createElement('tr');
 	table.appendChild(row)
 	for (let j = 0; j < 10; j++) {
 		let cell = document.createElement('td')
-		cell.id = ((i*10)+(j+1))
+		cell.id = (i + '-' + j)
 		table.appendChild(cell)
 	}
 }
 
-document.getElementById('36').classList.add('red')
-document.getElementById('52').classList.add('red')
-
-function advanceTime() {
-	if (game.playing) {
-		timer.innerText = game.timer;
-		game.timer++;
+// Game functions
+const drawPiece = () => {
+	let piece = game.currentPiece;
+	for (i = 0; i < piece.length; i++) {
+		for (j = 0; j < piece[i].length; j++) {
+			let pixel = document.getElementById(i + '-' + j)
+			console.log(pixel);
+			pixel.classList.add('red')
+		}
 	}
 }
 
-setInterval(advanceTime, 100)
+function advanceTime() {
+	timer.innerText = game.timer++;
+}
+
+// Time
+setInterval(() => {
+	if (!game.playing) return;
+	drawPiece
+	advanceTime()
+}, 1000)
+
+drawPiece()
+
+document.getElementById('3-6').classList.add('red')
+document.getElementById('5-2').classList.add('red')
