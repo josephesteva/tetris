@@ -1,4 +1,5 @@
 // GAME STATE
+let colors = ['red', 'blue', 'green', 'yellow', 'purple']
 let game = {
 	playing: false,
 	timer: 0,
@@ -7,6 +8,7 @@ let game = {
 		[1, 1],
 	],
 	positionY: 0,
+	currentColor: 'red'
 }
 
 // DOM elements
@@ -39,7 +41,7 @@ const drawPiece = () => {
 			let boardRow = i + game.positionY;
 			let pixel = document.getElementById(boardRow + '-' + j)
 			console.log(pixel);
-			pixel.classList.add('red')
+			pixel.classList.add(game.currentColor)
 			// if (boardRow >= 2) {
 			// 	document.getElementById(boardRow - 2 + '-' + j).classList.remove('red')
 			// }
@@ -59,7 +61,7 @@ function removePiece() {
 			let boardRow = i + game.positionY;
 			let pixel = document.getElementById(boardRow + '-' + j)
 			console.log(pixel);
-			pixel.classList.remove('red')
+			pixel.classList.remove(game.currentColor)
 		}
 	}
 }
@@ -70,8 +72,18 @@ function checkBottom() {
 	let pieceBottom = piece.length - 1 + game.positionY;
 	console.log(tableBottom);
 	if (pieceBottom === tableBottom) {
-		game.positionY = 0
+		game.positionY = 0;
+		game.currentColor = colors[Math.floor(Math.random() * 5)]
+		return;
 	}
+	let beneathPiece = pieceBottom + 1;
+	let classList = document.getElementById(beneathPiece + '-' + 0).classList //x position needs to be dynamic
+	if (classList.length) {
+		game.positionY = 0;
+		game.currentColor = colors[Math.floor(Math.random() * 5)]
+		return;
+	}
+
 }
 
 function advanceTime() {
