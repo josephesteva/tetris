@@ -27,7 +27,7 @@ for (let i = 0; i < 24; i++) {
 	for (let j = 0; j < 10; j++) {
 		let cell = document.createElement('td')
 		cell.id = (i + '-' + j)
-		table.appendChild(cell)
+		row.appendChild(cell)
 	}
 }
 
@@ -45,6 +45,7 @@ const drawPiece = () => {
 			// }
 		}
 	}
+	checkBottom()
 }
 
 function useGravity() {
@@ -63,9 +64,18 @@ function removePiece() {
 	}
 }
 
+function checkBottom() {
+	let piece = game.currentPiece;
+	let tableBottom = table.children.length - 1;
+	let pieceBottom = piece.length - 1 + game.positionY;
+	console.log(tableBottom);
+	if (pieceBottom === tableBottom) {
+		game.positionY = 0
+	}
+}
+
 function advanceTime() {
 	timer.innerText = game.timer++;
-	console.log(game.positionY);
 }
 
 // Time
@@ -75,7 +85,6 @@ setInterval(() => {
 	useGravity()
 	drawPiece()
 	advanceTime()
-}, 1000)
+}, 110)
 
-drawPiece()
-
+console.log(table.children);
