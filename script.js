@@ -1,15 +1,46 @@
 // GAME STATE
 let colors = ['red', 'blue', 'green', 'yellow', 'purple']
+let shapes = [
+	[
+		[1, 1],
+		[1, 1]
+	],
+	[
+		[1],
+		[1],
+		[1],
+		[1]
+	],
+	[
+		[1, 0],
+		[1, 0],
+		[1, 1]
+	],
+	[
+		[0, 1],
+		[0, 1],
+		[1, 1]
+	],
+	[
+		[1, 1, 0],
+		[0, 1, 1]
+	],
+	[
+		[0, 1, 1],
+		[1, 1, 0]
+	],
+	[
+		[0, 1, 0],
+		[1, 1, 1]
+	],
+]
 let game = {
 	playing: false,
 	timer: 0,
-	currentPiece: [
-		[1, 1],
-		[1, 1],
-	],
+	currentPiece: shapes[Math.floor(Math.random() * 7)],
+	currentColor: 'red',
 	positionY: 0,
-	positionX: 3,
-	currentColor: 'red'
+	positionX: 3
 }
 
 // DOM elements
@@ -38,22 +69,22 @@ playBTN.addEventListener('click', () => {
 })
 
 window.addEventListener('keydown', (event) => {
+	if (!game.playing) {
+		return;
+	}
+
 	if (event.key === 'ArrowLeft') {
 		removePiece();
 		game.positionX--;
 		drawPiece();
 	}
-})
 
-window.addEventListener('keydown', (event) => {
 	if (event.key === 'ArrowRight') {
 		removePiece();
 		game.positionX++;
 		drawPiece();
 	}
-})
 
-window.addEventListener('keydown', (event) => {
 	if (event.key === 'ArrowDown') {
 		removePiece();
 		useGravity();
@@ -66,6 +97,7 @@ const drawPiece = () => {
 	let piece = game.currentPiece;
 	for (i = 0; i < piece.length; i++) {
 		for (j = 0; j < piece[i].length; j++) {
+			if (piece[i][j] === 0) { continue }
 			let boardCol = j + game.positionX;
 			let boardRow = i + game.positionY;
 			let pixel = document.getElementById(boardRow + '-' + boardCol)
@@ -99,18 +131,24 @@ function checkBottom() {
 	let pieceBottom = piece.length - 1 + game.positionY;
 	console.log(tableBottom);
 	if (pieceBottom === tableBottom) {
-		game.positionY = 0;
-		game.currentColor = colors[Math.floor(Math.random() * 5)]
+		selectNewPiece()
 		return;
 	}
 	let beneathPiece = pieceBottom + 1;
 	let classList = document.getElementById(beneathPiece + '-' + game.positionX).classList //x position needs to be dynamic
 	if (classList.length) {
-		game.positionY = 0;
-		game.currentColor = colors[Math.floor(Math.random() * 5)]
+		selectNewPiece()
 		return;
 	}
 
+}
+
+function selectNewPiece() {
+	game.positionY = 0;
+	let randomNumberShapes = Math.floor(Math.random() * shapes.length)
+	let randomNumberColors = Math.floor(Math.random() * colors.length)
+	game.currentPiece = shapes[randomNumberShapes]
+	game.currentColor = colors[randomNumberColors]
 }
 
 function advanceTime() {
