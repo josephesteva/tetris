@@ -8,6 +8,7 @@ let game = {
 		[1, 1],
 	],
 	positionY: 0,
+	positionX: 3,
 	currentColor: 'red'
 }
 
@@ -15,12 +16,8 @@ let game = {
 let playBTN = document.getElementById('play')
 let timer = document.getElementById('timer')
 let table = document.getElementById('table')
-
-playBTN.addEventListener('click', () => {
-	game.playing = !game.playing;
-	game.playing ? playBTN.innerText = 'Pause' : playBTN.innerText = 'Play';
-
-})
+let left = document.getElementById('left')
+let right = document.getElementById('right')
 
 // Game Board
 for (let i = 0; i < 24; i++) {
@@ -33,13 +30,35 @@ for (let i = 0; i < 24; i++) {
 	}
 }
 
+// Event Listeners
+playBTN.addEventListener('click', () => {
+	game.playing = !game.playing;
+	game.playing ? playBTN.innerText = 'Pause' : playBTN.innerText = 'Play';
+
+})
+
+window.addEventListener('keydown', (event) => {
+	console.log(event);
+	if (event.key === 'ArrowLeft') {
+		game.positionX--
+	}
+})
+
+window.addEventListener('keydown', (event) => {
+	console.log(event);
+	if (event.key === 'ArrowRight') {
+		game.positionX++
+	}
+})
+
 // Game functions
 const drawPiece = () => {
 	let piece = game.currentPiece;
 	for (i = 0; i < piece.length; i++) {
 		for (j = 0; j < piece[i].length; j++) {
+			let boardCol = j + game.positionX;
 			let boardRow = i + game.positionY;
-			let pixel = document.getElementById(boardRow + '-' + j)
+			let pixel = document.getElementById(boardRow + '-' + boardCol)
 			console.log(pixel);
 			pixel.classList.add(game.currentColor)
 			// if (boardRow >= 2) {
@@ -58,8 +77,9 @@ function removePiece() {
 	let piece = game.currentPiece;
 	for (i = 0; i < piece.length; i++) {
 		for (j = 0; j < piece[i].length; j++) {
+			let boardCol = j + game.positionX;
 			let boardRow = i + game.positionY;
-			let pixel = document.getElementById(boardRow + '-' + j)
+			let pixel = document.getElementById(boardRow + '-' + boardCol)
 			console.log(pixel);
 			pixel.classList.remove(game.currentColor)
 		}
@@ -77,7 +97,7 @@ function checkBottom() {
 		return;
 	}
 	let beneathPiece = pieceBottom + 1;
-	let classList = document.getElementById(beneathPiece + '-' + 0).classList //x position needs to be dynamic
+	let classList = document.getElementById(beneathPiece + '-' + game.positionX).classList //x position needs to be dynamic
 	if (classList.length) {
 		game.positionY = 0;
 		game.currentColor = colors[Math.floor(Math.random() * 5)]
