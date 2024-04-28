@@ -38,16 +38,26 @@ playBTN.addEventListener('click', () => {
 })
 
 window.addEventListener('keydown', (event) => {
-	console.log(event);
 	if (event.key === 'ArrowLeft') {
-		game.positionX--
+		removePiece();
+		game.positionX--;
+		drawPiece();
 	}
 })
 
 window.addEventListener('keydown', (event) => {
-	console.log(event);
 	if (event.key === 'ArrowRight') {
-		game.positionX++
+		removePiece();
+		game.positionX++;
+		drawPiece();
+	}
+})
+
+window.addEventListener('keydown', (event) => {
+	if (event.key === 'ArrowDown') {
+		removePiece();
+		useGravity();
+		drawPiece();
 	}
 })
 
@@ -61,9 +71,6 @@ const drawPiece = () => {
 			let pixel = document.getElementById(boardRow + '-' + boardCol)
 			console.log(pixel);
 			pixel.classList.add(game.currentColor)
-			// if (boardRow >= 2) {
-			// 	document.getElementById(boardRow - 2 + '-' + j).classList.remove('red')
-			// }
 		}
 	}
 	checkBottom()
@@ -117,6 +124,6 @@ setInterval(() => {
 	useGravity()
 	drawPiece()
 	advanceTime()
-}, 110)
+}, 500)
 
 console.log(table.children);
