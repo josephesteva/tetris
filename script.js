@@ -73,13 +73,15 @@ window.addEventListener('keydown', (event) => {
 		return;
 	}
 
-	if (event.key === 'ArrowLeft') {
+	if (event.key === 'ArrowLeft' && game.positionX > 0) {
 		removePiece();
 		game.positionX--;
 		drawPiece();
 	}
 
-	if (event.key === 'ArrowRight') {
+	if (event.key === 'ArrowRight'
+		&& game.positionX < (10 - checkWidth())
+	) {
 		removePiece();
 		game.positionX++;
 		drawPiece();
@@ -149,6 +151,22 @@ function selectNewPiece() {
 	let randomNumberColors = Math.floor(Math.random() * colors.length)
 	game.currentPiece = shapes[randomNumberShapes]
 	game.currentColor = colors[randomNumberColors]
+	let pieceWidth = checkWidth();
+	if (game.positionX + pieceWidth > 10) {
+		game.positionX = 10 - pieceWidth
+	}
+}
+
+function checkWidth() {
+	let width = 0;
+	for (let i = 0; i < game.currentPiece.length; i++) {
+		console.log(game.currentPiece[i].length);
+		if (game.currentPiece[i].length > width) {
+			width = game.currentPiece[i].length
+		}
+	}
+	console.log(width);
+	return width
 }
 
 function advanceTime() {
