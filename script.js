@@ -47,8 +47,6 @@ let game = {
 let playBTN = document.getElementById('play')
 let timer = document.getElementById('timer')
 let table = document.getElementById('table')
-let left = document.getElementById('left')
-let right = document.getElementById('right')
 
 // Game Board
 for (let i = 0; i < 24; i++) {
@@ -56,7 +54,6 @@ for (let i = 0; i < 24; i++) {
 	table.appendChild(row)
 	for (let j = 0; j < 10; j++) {
 		let cell = document.createElement('td')
-		cell.id = (i + '-' + j)
 		row.appendChild(cell)
 	}
 }
@@ -97,6 +94,16 @@ window.addEventListener('keydown', (event) => {
 		console.log('up');
 		// rotate()
 	}
+
+	if (event.key === ' ') {
+		let status = checkBottom()
+		removePiece()
+		while (!status) {
+			useGravity()
+			status = checkBottom()
+		}
+		drawPiece()
+	}
 })
 
 // Game functions
@@ -107,8 +114,8 @@ const drawPiece = () => {
 			if (piece[i][j] === 0) { continue }
 			let boardCol = j + game.positionX;
 			let boardRow = i + game.positionY;
-			let pixel = document.getElementById(boardRow + '-' + boardCol)
 			if (boardRow >= 0) {
+				let pixel = table.children[boardRow].children[boardCol]
 				pixel.classList.add(game.currentColor)
 			}
 		}
@@ -123,8 +130,6 @@ const drawPiece = () => {
 	if (atBottom) {
 		selectNewPiece()
 	}
-
-	// checkBottom()
 }
 
 function useGravity() {
@@ -137,8 +142,8 @@ function removePiece() {
 		for (j = 0; j < piece[i].length; j++) {
 			let boardCol = j + game.positionX;
 			let boardRow = i + game.positionY;
-			let pixel = document.getElementById(boardRow + '-' + boardCol)
 			if (boardRow >= 0) {
+				let pixel = table.children[boardRow].children[boardCol]
 				pixel.classList.remove(game.currentColor)
 			}
 		}
@@ -149,22 +154,24 @@ function checkBottom() {
 	let piece = game.currentPiece;
 	let tableBottom = table.children.length - 1;
 	let pieceBottom = piece.length - 1 + game.positionY;
+	// board bottom
 	if (pieceBottom === tableBottom) {
 		return true;
 	}
+	// hitting top of another piece
 	let beneathPiece = pieceBottom + 1;
-	let classList = document.getElementById(beneathPiece + '-' + game.positionX).classList //x position needs to be dynamic
+	let classList = table.children[beneathPiece].children[game.positionX].classList
 	if (classList.length) {
 		return true;
 	}
-
+	return false;
 }
 
 function checkTop() {
 	if (game.positionY <= 0) {
-		console.log('top');
 		return true
 	}
+	return false
 }
 
 function selectNewPiece() {
