@@ -39,7 +39,7 @@ let game = {
 	timer: 0,
 	currentPiece: shapes[Math.floor(Math.random() * 7)],
 	currentColor: 'red',
-	positionY: 0,
+	positionY: -3,
 	positionX: 3
 }
 
@@ -80,7 +80,7 @@ window.addEventListener('keydown', (event) => {
 	}
 
 	if (event.key === 'ArrowRight'
-		&& game.positionX < (10 - checkWidth())
+		&& game.positionX < (10 - game.currentPiece[0].length)
 	) {
 		removePiece();
 		game.positionX++;
@@ -91,6 +91,11 @@ window.addEventListener('keydown', (event) => {
 		removePiece();
 		useGravity();
 		drawPiece();
+	}
+
+	if (event.key === 'ArrowUp') {
+		console.log('up');
+		// rotate()
 	}
 })
 
@@ -103,11 +108,23 @@ const drawPiece = () => {
 			let boardCol = j + game.positionX;
 			let boardRow = i + game.positionY;
 			let pixel = document.getElementById(boardRow + '-' + boardCol)
-			console.log(pixel);
-			pixel.classList.add(game.currentColor)
+			if (boardRow >= 0) {
+				pixel.classList.add(game.currentColor)
+			}
 		}
 	}
-	checkBottom()
+	let atBottom = checkBottom()
+	let atTop = checkTop()
+	if (atBottom && atTop) {
+		game.playing = false;
+		alert('GAME OVER')
+		return
+	}
+	if (atBottom) {
+		selectNewPiece()
+	}
+
+	// checkBottom()
 }
 
 function useGravity() {
@@ -121,8 +138,9 @@ function removePiece() {
 			let boardCol = j + game.positionX;
 			let boardRow = i + game.positionY;
 			let pixel = document.getElementById(boardRow + '-' + boardCol)
-			console.log(pixel);
-			pixel.classList.remove(game.currentColor)
+			if (boardRow >= 0) {
+				pixel.classList.remove(game.currentColor)
+			}
 		}
 	}
 }
@@ -131,27 +149,31 @@ function checkBottom() {
 	let piece = game.currentPiece;
 	let tableBottom = table.children.length - 1;
 	let pieceBottom = piece.length - 1 + game.positionY;
-	console.log(tableBottom);
 	if (pieceBottom === tableBottom) {
-		selectNewPiece()
-		return;
+		return true;
 	}
 	let beneathPiece = pieceBottom + 1;
 	let classList = document.getElementById(beneathPiece + '-' + game.positionX).classList //x position needs to be dynamic
 	if (classList.length) {
-		selectNewPiece()
-		return;
+		return true;
 	}
 
 }
 
+function checkTop() {
+	if (game.positionY <= 0) {
+		console.log('top');
+		return true
+	}
+}
+
 function selectNewPiece() {
-	game.positionY = 0;
 	let randomNumberShapes = Math.floor(Math.random() * shapes.length)
 	let randomNumberColors = Math.floor(Math.random() * colors.length)
 	game.currentPiece = shapes[randomNumberShapes]
 	game.currentColor = colors[randomNumberColors]
-	let pieceWidth = checkWidth();
+	game.positionY = 0 - game.currentPiece.length;
+	let pieceWidth = game.currentPiece[0].length;
 	if (game.positionX + pieceWidth > 10) {
 		game.positionX = 10 - pieceWidth
 	}
@@ -183,3 +205,10 @@ setInterval(() => {
 }, 500)
 
 console.log(table.children);
+
+// function rotate() {
+// 	if (game.currentPiece == [[1, 1], [1, 1]]) {
+// 		console.log('square');
+// 	}
+
+// }
