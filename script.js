@@ -37,6 +37,8 @@ let shapes = [
 let game = {
 	playing: false,
 	timer: 0,
+	speed: 500,
+	intervalId: null,
 	score: 0,
 	level: 1,
 	currentPiece: shapes[0],
@@ -69,6 +71,8 @@ resetBTN.addEventListener('click', () => {
 	game = {
 		playing: false,
 		timer: 0,
+		speed: 500,
+		intervalId: setInterval(runGame, 500),
 		score: 0,
 		level: 1,
 		currentPiece: shapes[Math.floor(Math.random() * 7)],
@@ -124,6 +128,11 @@ window.addEventListener('keydown', (event) => {
 		rotate()
 		drawPiece()
 	}
+
+	// if (event.key === 'l') {
+	// 	game.level++
+	// 	adjustSpeed()
+	// }
 
 	if (event.key === 'd') {
 		let status = checkBottom()
@@ -311,21 +320,38 @@ function increaseScore() {
 }
 
 function setLevel() {
-	game.level = Math.floor((game.score / 10) + 1)
+	game.level = Math.floor((game.score / 5) + 1)
 	level.innerText = game.level
+	adjustSpeed()
 }
 
+
+function adjustSpeed() {
+	let newSpeed = (500 * (0.91 ** (game.level - 1)))
+	if (newSpeed !== game.speed) {
+		console.log('level up');
+		console.log(newSpeed);
+		game.speed = newSpeed
+		console.log(newSpeed);
+		console.log(game.intervalId);
+		clearInterval(game.intervalId)
+		game.intervalId = setInterval(runGame, game.speed)
+	}
+	return
+}
+
+// Time
 function advanceTime() {
 	timer.innerText = game.timer++;
 }
 
-// Time
-setInterval(() => {
+function runGame() {
 	if (!game.playing) return;
 	removePiece()
 	useGravity()
 	drawPiece()
 	advanceTime()
-}, 500)
+}
 
-console.log(table.children);
+const initiateGame = setInterval(runGame, game.speed)
+game.intervalId = initiateGame
