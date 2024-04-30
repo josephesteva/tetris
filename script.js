@@ -37,6 +37,7 @@ let shapes = [
 let game = {
 	playing: false,
 	timer: 0,
+	score: 0,
 	currentPiece: shapes[Math.floor(Math.random() * 7)],
 	currentColor: 'red',
 	positionY: -3,
@@ -47,15 +48,11 @@ let game = {
 let playBTN = document.getElementById('play')
 let timer = document.getElementById('timer')
 let table = document.getElementById('table')
+let score = document.getElementById('score')
 
 // Game Board
 for (let i = 0; i < 24; i++) {
-	let row = document.createElement('tr');
-	table.appendChild(row)
-	for (let j = 0; j < 10; j++) {
-		let cell = document.createElement('td')
-		row.appendChild(cell)
-	}
+	createRow();
 }
 
 // Event Listeners
@@ -100,6 +97,10 @@ window.addEventListener('keydown', (event) => {
 		drawPiece()
 	}
 
+	if (event.key === 'c') {
+		createRows()
+	}
+
 	if (event.key === 'd') {
 		let status = checkBottom()
 		removePiece()
@@ -133,7 +134,7 @@ const drawPiece = () => {
 		return
 	}
 	if (atBottom) {
-		// checkLineClear()
+		checkLineClear()
 		selectNewPiece()
 	}
 }
@@ -160,7 +161,8 @@ function checkBottom() {
 	let piece = game.currentPiece;
 	let tableBottom = table.children.length - 1;
 	let pieceBottom = piece.length - 1 + game.positionY;
-	// board bottom
+
+	// hitting board bottom
 	if (pieceBottom === tableBottom) {
 		return true;
 	}
@@ -206,36 +208,35 @@ function checkTop() {
 	return false
 }
 
-// function checkLineClear() {
-// 	for (i = 0; i < game.currentPiece.length; i++) {
-// 		for (j = 0; j < 10; j++) {
-// 			let square = table.children[game.positionY + i].children[j]
-// 			if (!square.classList.length) {
-// 				break
-// 			} else if (j === 9 && square.classList.length) {
-// 				console.log('Line', game.positionY + i + 1, 'should be removed');
-// 				// console.log('game row index', game.positionY + i, table.children[game.positionY + i]);
-// 				// table.splice(game.positionY + i, 1)
-// 				table.children[game.positionY + i].remove();
-// 				createRow()
-// 			}
-// 		}
-// 	}
-// }
+function checkLineClear() {
+	for (i = 0; i < game.currentPiece.length; i++) {
+		for (j = 0; j < 10; j++) {
+			let square = table.children[game.positionY + i].children[j]
+			if (!square.classList.length) {
+				break
+			} else if (j === 9 && square.classList.length) {
+				console.log('Line', game.positionY + i + 1, 'should be removed');
+				table.children[game.positionY + i].remove();
+				increaseScore()
+				createRow()
+			}
+		}
+	}
+}
 
-// function createRow() {
-// 	let newRow = document.createElement('tr')
-// 	for (i = 0; i < 10; i++) {
-// 		let cell = document.createElement('td');
-// 		newRow.appendChild(cell);
-// 	}
-// 	table.prepend(newRow)
-// }
+function createRow() {
+	let newRow = document.createElement('tr')
+	for (l = 0; l < 10; l++) {
+		let cell = document.createElement('td');
+		newRow.appendChild(cell);
+	}
+	table.prepend(newRow)
+}
 
 function selectNewPiece() {
 	let randomNumberShapes = Math.floor(Math.random() * shapes.length)
 	let randomNumberColors = Math.floor(Math.random() * colors.length)
-	game.currentPiece = shapes[1]
+	game.currentPiece = shapes[randomNumberShapes]
 	game.currentColor = colors[randomNumberColors]
 	game.positionY = 0 - game.currentPiece.length;
 	let pieceWidth = game.currentPiece[0].length;
@@ -254,14 +255,11 @@ function rotate() {
 		}
 		newPiece.push(newRow)
 	}
-	console.log(newPiece);
+
 	let oldX = game.positionX
 	let oldPiece = game.currentPiece
 	game.currentPiece = newPiece
 	for (i = 0; i < game.currentPiece[0].length; i++) {
-		// if (checkRight()) {
-		// 	game.positionX--
-		// }
 		if (table.children[game.positionY].children[game.positionX + i].classList.length) {
 			console.log('conflict');
 			game.positionX--
@@ -281,6 +279,11 @@ function rotate() {
 		game.currentPiece = oldPiece;
 		game.positionX = oldX;
 	}
+}
+
+function increaseScore() {
+	game.score++
+	score.innerText = game.score
 }
 
 function advanceTime() {
