@@ -1,3 +1,24 @@
+body {
+	background-color: lightblue;
+}
+
+body>div {
+	display: flex;
+}
+
+body>h1 {
+	margin-left: 6em;
+}
+
+body>div>div {
+	margin: 2em 4em 0em 4em;
+}
+
+table {
+	border-spacing: .5px;
+	background-color: #09435283;
+}
+
 td {
 	border: 1px solid black;
 	height: 1em;
@@ -6,10 +27,6 @@ td {
 
 span {
 	margin-right: 1em;
-}
-
-table {
-	border-spacing: 0px;
 }
 
 .red {
@@ -33,3 +50,4 @@ table {
 .purple {
 	background-color: purple;
 }
+

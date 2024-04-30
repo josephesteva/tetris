@@ -43,12 +43,12 @@ let game = {
 	level: 1,
 	currentPiece: shapes[0],
 	currentColor: 'red',
-	positionY: -3,
+	positionY: -2,
 	positionX: 3
 }
 
 // DOM elements
-let body = document.querySelector('body')
+let tableDiv = document.getElementById('table-div')
 let playBTN = document.getElementById('play')
 let resetBTN = document.getElementById('reset')
 let table = document.getElementById('table')
@@ -75,14 +75,14 @@ resetBTN.addEventListener('click', () => {
 		intervalId: setInterval(runGame, 500),
 		score: 0,
 		level: 1,
-		currentPiece: shapes[Math.floor(Math.random() * 7)],
+		currentPiece: shapes[0],
 		currentColor: 'red',
-		positionY: -3,
+		positionY: -2,
 		positionX: 3
 	}
 	table.remove();
 	let newTable = document.createElement('table')
-	body.appendChild(newTable)
+	tableDiv.appendChild(newTable)
 	newTable.setAttribute("id", "table")
 	table = document.getElementById('table')
 	for (let i = 0; i < 24; i++) {
