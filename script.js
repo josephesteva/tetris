@@ -235,7 +235,7 @@ function checkTop() {
 function selectNewPiece() {
 	let randomNumberShapes = Math.floor(Math.random() * shapes.length)
 	let randomNumberColors = Math.floor(Math.random() * colors.length)
-	game.currentPiece = shapes[randomNumberShapes]
+	game.currentPiece = shapes[1]
 	game.currentColor = colors[randomNumberColors]
 	game.positionY = 0 - game.currentPiece.length;
 	let pieceWidth = game.currentPiece[0].length;
@@ -243,18 +243,6 @@ function selectNewPiece() {
 		game.positionX = 10 - pieceWidth
 	}
 }
-
-// function checkWidth() {
-// 	let width = 0;
-// 	for (let i = 0; i < game.currentPiece.length; i++) {
-// 		console.log(game.currentPiece[i].length);
-// 		if (game.currentPiece[i].length > width) {
-// 			width = game.currentPiece[i].length
-// 		}
-// 	}
-// 	console.log(width);
-// 	return width
-// }
 
 function rotate() {
 	let piece = game.currentPiece;
@@ -267,21 +255,31 @@ function rotate() {
 		newPiece.push(newRow)
 	}
 	console.log(newPiece);
-	// before drawing piece, check for each filled in block of new piece, if there is no style class that conflicts 
-	// if there is a class bump positionX left by one and continue loop (potential iteration skip to account for bump)
-	// need to make sure that bump doesn't push too far left
-	// if bump pushes too far left, don't allow rotation
-	// potentially need to save old game.currentPiece in order to revert ... this function probably doesn't work if
-	// game.current piece hasn't been updated yet ... actually it should as long as you just start with piece at pos x and y?
-	// so hopefully don't need to save old game state
+	let oldX = game.positionX
+	let oldPiece = game.currentPiece
 	game.currentPiece = newPiece
 	for (i = 0; i < game.currentPiece[0].length; i++) {
+		// if (checkRight()) {
+		// 	game.positionX--
+		// }
 		if (table.children[game.positionY].children[game.positionX + i].classList.length) {
 			console.log('conflict');
+			game.positionX--
 		}
 		if (game.positionX + game.currentPiece[0].length > 9) {
 			game.positionX = 10 - game.currentPiece[0].length
 		}
+		if (game.positionX < 0) {
+			console.log('off board');
+			game.currentPiece = oldPiece;
+			game.positionX = oldX;
+			return
+		}
+	}
+	if (table.children[game.positionY].children[game.positionX].classList.length) {
+		console.log('doesnt fit');
+		game.currentPiece = oldPiece;
+		game.positionX = oldX;
 	}
 }
 
