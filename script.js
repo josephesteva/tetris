@@ -80,6 +80,7 @@ window.addEventListener('keydown', (event) => {
 		&& game.positionX < (10 - game.currentPiece[0].length)
 	) {
 		removePiece();
+		checkRight();
 		game.positionX++;
 		drawPiece();
 	}
@@ -92,10 +93,12 @@ window.addEventListener('keydown', (event) => {
 
 	if (event.key === 'ArrowUp') {
 		console.log('up');
-		// rotate()
+		removePiece()
+		rotate()
+		drawPiece()
 	}
 
-	if (event.key === ' ') {
+	if (event.key === 'd') {
 		let status = checkBottom()
 		removePiece()
 		while (!status) {
@@ -112,8 +115,8 @@ const drawPiece = () => {
 	for (i = 0; i < piece.length; i++) {
 		for (j = 0; j < piece[i].length; j++) {
 			if (piece[i][j] === 0) { continue }
-			let boardCol = j + game.positionX;
 			let boardRow = i + game.positionY;
+			let boardCol = j + game.positionX;
 			if (boardRow >= 0) {
 				let pixel = table.children[boardRow].children[boardCol]
 				pixel.classList.add(game.currentColor)
@@ -128,6 +131,7 @@ const drawPiece = () => {
 		return
 	}
 	if (atBottom) {
+		// checkLineClear()
 		selectNewPiece()
 	}
 }
@@ -140,8 +144,8 @@ function removePiece() {
 	let piece = game.currentPiece;
 	for (i = 0; i < piece.length; i++) {
 		for (j = 0; j < piece[i].length; j++) {
-			let boardCol = j + game.positionX;
 			let boardRow = i + game.positionY;
+			let boardCol = j + game.positionX;
 			if (boardRow >= 0) {
 				let pixel = table.children[boardRow].children[boardCol]
 				pixel.classList.remove(game.currentColor)
@@ -158,11 +162,17 @@ function checkBottom() {
 	if (pieceBottom === tableBottom) {
 		return true;
 	}
+
 	// hitting top of another piece
-	let beneathPiece = pieceBottom + 1;
-	let classList = table.children[beneathPiece].children[game.positionX].classList
-	if (classList.length) {
-		return true;
+	for (i = 0; i < piece.length; i++) {
+		for (j = 0; j < piece[i].length; j++) {
+			if (piece[i][j] && !piece[i + 1]?.[j]) {
+				let y = game.positionY + i + 1;
+				let x = game.positionX + j;
+				if (table.children[y].children[x].classList.length)
+					return true
+			}
+		}
 	}
 	return false;
 }
@@ -173,6 +183,32 @@ function checkTop() {
 	}
 	return false
 }
+
+// function checkLineClear() {
+// 	for (i = 0; i < game.currentPiece.length; i++) {
+// 		for (j = 0; j < 10; j++) {
+// 			let square = table.children[game.positionY + i].children[j]
+// 			if (!square.classList.length) {
+// 				break
+// 			} else if (j === 9 && square.classList.length) {
+// 				console.log('Line', game.positionY + i + 1, 'should be removed');
+// 				// console.log('game row index', game.positionY + i, table.children[game.positionY + i]);
+// 				// table.splice(game.positionY + i, 1)
+// 				table.children[game.positionY + i].remove();
+// 				createRow()
+// 			}
+// 		}
+// 	}
+// }
+
+// function createRow() {
+// 	let newRow = document.createElement('tr')
+// 	for (i = 0; i < 10; i++) {
+// 		let cell = document.createElement('td');
+// 		newRow.appendChild(cell);
+// 	}
+// 	table.prepend(newRow)
+// }
 
 function selectNewPiece() {
 	let randomNumberShapes = Math.floor(Math.random() * shapes.length)
@@ -186,16 +222,53 @@ function selectNewPiece() {
 	}
 }
 
-function checkWidth() {
-	let width = 0;
-	for (let i = 0; i < game.currentPiece.length; i++) {
-		console.log(game.currentPiece[i].length);
-		if (game.currentPiece[i].length > width) {
-			width = game.currentPiece[i].length
+// function checkWidth() {
+// 	let width = 0;
+// 	for (let i = 0; i < game.currentPiece.length; i++) {
+// 		console.log(game.currentPiece[i].length);
+// 		if (game.currentPiece[i].length > width) {
+// 			width = game.currentPiece[i].length
+// 		}
+// 	}
+// 	console.log(width);
+// 	return width
+// }
+
+function rotate() {
+	let piece = game.currentPiece;
+	let newPiece = [];
+	for (i = 0; i < piece[0].length; i++) {
+		let newRow = [];
+		for (j = 0; j < piece.length; j++) {
+			newRow.unshift(piece[j][i])
+		}
+		newPiece.push(newRow)
+	}
+	console.log(newPiece);
+	// before drawing piece, check for each filled in block of new piece, if there is no style class that conflicts 
+	// if there is a class bump positionX left by one and continue loop (potential iteration skip to account for bump)
+	// need to make sure that bump doesn't push too far left
+	// if bump pushes too far left, don't allow rotation
+	// potentially need to save old game.currentPiece in order to revert ... this function probably doesn't work if
+	// game.current piece hasn't been updated yet ... actually it should as long as you just start with piece at pos x and y?
+	// so hopefully don't need to save old game state
+	game.currentPiece = newPiece
+	for (i = 0; i < game.currentPiece[0].length; i++) {
+		if (table.children[game.positionY].children[game.positionX + i].classList.length) {
+			console.log('conflict');
+		}
+		if (game.positionX + game.currentPiece[0].length > 9) {
+			game.positionX = 10 - game.currentPiece[0].length
 		}
 	}
-	console.log(width);
-	return width
+}
+
+function checkRight() {
+	for (i = 0; i < game.currentPiece.length; i++) {
+		if (table.children[game.positionY + i].children[game.positionX + game.currentPiece[0].length].classList.length) {
+			console.log('right collision');
+		}
+	}
 }
 
 function advanceTime() {
@@ -212,10 +285,3 @@ setInterval(() => {
 }, 500)
 
 console.log(table.children);
-
-// function rotate() {
-// 	if (game.currentPiece == [[1, 1], [1, 1]]) {
-// 		console.log('square');
-// 	}
-
-// }
