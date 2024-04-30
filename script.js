@@ -38,6 +38,7 @@ let game = {
 	playing: false,
 	timer: 0,
 	score: 0,
+	level: 1,
 	currentPiece: shapes[Math.floor(Math.random() * 7)],
 	currentColor: 'red',
 	positionY: -3,
@@ -49,6 +50,7 @@ let playBTN = document.getElementById('play')
 let timer = document.getElementById('timer')
 let table = document.getElementById('table')
 let score = document.getElementById('score')
+let level = document.getElementById('level')
 
 // Game Board
 for (let i = 0; i < 24; i++) {
@@ -95,10 +97,6 @@ window.addEventListener('keydown', (event) => {
 		removePiece()
 		rotate()
 		drawPiece()
-	}
-
-	if (event.key === 'c') {
-		createRows()
 	}
 
 	if (event.key === 'd') {
@@ -284,6 +282,12 @@ function rotate() {
 function increaseScore() {
 	game.score++
 	score.innerText = game.score
+	setLevel()
+}
+
+function setLevel() {
+	game.level = Math.floor((game.score / 10) + 1)
+	level.innerText = game.level
 }
 
 function advanceTime() {
