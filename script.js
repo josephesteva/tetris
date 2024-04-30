@@ -46,7 +46,9 @@ let game = {
 }
 
 // DOM elements
+let body = document.querySelector('body')
 let playBTN = document.getElementById('play')
+let resetBTN = document.getElementById('reset')
 let timer = document.getElementById('timer')
 let table = document.getElementById('table')
 let score = document.getElementById('score')
@@ -61,7 +63,34 @@ for (let i = 0; i < 24; i++) {
 playBTN.addEventListener('click', () => {
 	game.playing = !game.playing;
 	game.playing ? playBTN.innerText = 'Pause' : playBTN.innerText = 'Play';
+})
 
+resetBTN.addEventListener('click', () => {
+	game = {
+		playing: false,
+		timer: 0,
+		score: 0,
+		level: 1,
+		currentPiece: shapes[Math.floor(Math.random() * 7)],
+		currentColor: 'red',
+		positionY: -3,
+		positionX: 3
+	}
+	table.remove();
+	let newTable = document.createElement('table')
+	// let newP = document.createElement('p')
+	// newP.innerText = 'Test'
+	body.appendChild(newTable)
+	// body.appendChild(newP)
+	newTable.setAttribute("id", "table")
+	table = document.getElementById('table')
+	for (let i = 0; i < 24; i++) {
+		createRow();
+	}
+	playBTN.innerText = 'Start'
+	timer.innerText = 0;
+	score.innerText = 0;
+	level.innerText = 1;
 })
 
 window.addEventListener('keydown', (event) => {

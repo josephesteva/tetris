@@ -4,6 +4,10 @@ td {
 	width: .8em;
 }
 
+span {
+	margin-right: 1em;
+}
+
 table {
 	border-spacing: 0px;
 }
