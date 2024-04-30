@@ -70,7 +70,9 @@ window.addEventListener('keydown', (event) => {
 		return;
 	}
 
-	if (event.key === 'ArrowLeft' && game.positionX > 0) {
+	if (event.key === 'ArrowLeft'
+		&& game.positionX > 0
+		&& !checkLeft()) {
 		removePiece();
 		game.positionX--;
 		drawPiece();
@@ -78,9 +80,9 @@ window.addEventListener('keydown', (event) => {
 
 	if (event.key === 'ArrowRight'
 		&& game.positionX < (10 - game.currentPiece[0].length)
+		&& !checkRight()
 	) {
 		removePiece();
-		checkRight();
 		game.positionX++;
 		drawPiece();
 	}
@@ -177,6 +179,26 @@ function checkBottom() {
 	return false;
 }
 
+function checkRight() {
+	for (i = 0; i < game.currentPiece.length; i++) {
+		if (table.children[game.positionY + i].children[game.positionX + game.currentPiece[0].length].classList.length) {
+			console.log('right collision');
+			return true
+		}
+	}
+	return false
+}
+
+function checkLeft() {
+	for (i = 0; i < game.currentPiece.length; i++) {
+		if (table.children[game.positionY + i].children[game.positionX - 1].classList.length) {
+			console.log('left collision');
+			return true
+		}
+	}
+	return false
+}
+
 function checkTop() {
 	if (game.positionY <= 0) {
 		return true
@@ -259,14 +281,6 @@ function rotate() {
 		}
 		if (game.positionX + game.currentPiece[0].length > 9) {
 			game.positionX = 10 - game.currentPiece[0].length
-		}
-	}
-}
-
-function checkRight() {
-	for (i = 0; i < game.currentPiece.length; i++) {
-		if (table.children[game.positionY + i].children[game.positionX + game.currentPiece[0].length].classList.length) {
-			console.log('right collision');
 		}
 	}
 }
