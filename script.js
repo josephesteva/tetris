@@ -1,5 +1,5 @@
 // GAME STATE
-let colors = ['red', 'blue', 'green', 'yellow', 'purple']
+let colors = ['red', 'blue', 'green', 'cyan', 'yellow', 'orange', 'purple']
 let shapes = [
 	[
 		[1, 1],
@@ -39,7 +39,7 @@ let game = {
 	timer: 0,
 	score: 0,
 	level: 1,
-	currentPiece: shapes[Math.floor(Math.random() * 7)],
+	currentPiece: shapes[0],
 	currentColor: 'red',
 	positionY: -3,
 	positionX: 3
@@ -78,10 +78,7 @@ resetBTN.addEventListener('click', () => {
 	}
 	table.remove();
 	let newTable = document.createElement('table')
-	// let newP = document.createElement('p')
-	// newP.innerText = 'Test'
 	body.appendChild(newTable)
-	// body.appendChild(newP)
 	newTable.setAttribute("id", "table")
 	table = document.getElementById('table')
 	for (let i = 0; i < 24; i++) {
@@ -262,9 +259,8 @@ function createRow() {
 
 function selectNewPiece() {
 	let randomNumberShapes = Math.floor(Math.random() * shapes.length)
-	let randomNumberColors = Math.floor(Math.random() * colors.length)
 	game.currentPiece = shapes[randomNumberShapes]
-	game.currentColor = colors[randomNumberColors]
+	game.currentColor = colors[randomNumberShapes]
 	game.positionY = 0 - game.currentPiece.length;
 	let pieceWidth = game.currentPiece[0].length;
 	if (game.positionX + pieceWidth > 10) {
