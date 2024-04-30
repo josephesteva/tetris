@@ -38,7 +38,7 @@ let game = {
 	playing: false,
 	timer: 0,
 	speed: 500,
-	intervalId: null,
+	intervalId: setInterval(runGame, 500),
 	score: 0,
 	level: 1,
 	currentPiece: shapes[0],
@@ -51,7 +51,6 @@ let game = {
 let body = document.querySelector('body')
 let playBTN = document.getElementById('play')
 let resetBTN = document.getElementById('reset')
-let timer = document.getElementById('timer')
 let table = document.getElementById('table')
 let score = document.getElementById('score')
 let level = document.getElementById('level')
@@ -68,6 +67,7 @@ playBTN.addEventListener('click', () => {
 })
 
 resetBTN.addEventListener('click', () => {
+	clearInterval(game.intervalId)
 	game = {
 		playing: false,
 		timer: 0,
@@ -89,7 +89,6 @@ resetBTN.addEventListener('click', () => {
 		createRow();
 	}
 	playBTN.innerText = 'Start'
-	timer.innerText = 0;
 	score.innerText = 0;
 	level.innerText = 1;
 })
@@ -164,6 +163,7 @@ const drawPiece = () => {
 	if (atBottom && atTop) {
 		game.playing = false;
 		alert('GAME OVER')
+		// clearInterval(game.intervalId)
 		return
 	}
 	if (atBottom) {
@@ -342,7 +342,7 @@ function adjustSpeed() {
 
 // Time
 function advanceTime() {
-	timer.innerText = game.timer++;
+	game.timer++;
 }
 
 function runGame() {
@@ -352,6 +352,3 @@ function runGame() {
 	drawPiece()
 	advanceTime()
 }
-
-const initiateGame = setInterval(runGame, game.speed)
-game.intervalId = initiateGame
