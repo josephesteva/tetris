@@ -1,5 +1,6 @@
 // GAME STATE
-let colors = ['red', 'blue', 'green', 'cyan', 'yellow', 'orange', 'purple']
+let colors = ['red', 'blue', 'purple', 'orange', 'cyan', 'yellow', 'green']
+let rossArray = ['bob-ross', 'bob-ross', 'bob-ross', 'rick-ross', 'rick-ross', 'ross-geller', 'ross-geller']
 let shapes = [
 	[
 		[1, 1],
@@ -10,6 +11,10 @@ let shapes = [
 		[1],
 		[1],
 		[1]
+	],
+	[
+		[0, 1, 0],
+		[1, 1, 1]
 	],
 	[
 		[1, 0],
@@ -29,10 +34,6 @@ let shapes = [
 		[0, 1, 1],
 		[1, 1, 0]
 	],
-	[
-		[0, 1, 0],
-		[1, 1, 1]
-	],
 ]
 
 let game = {
@@ -49,6 +50,7 @@ let game = {
 	positionY: -2,
 	positionX: 4,
 }
+let rossMode = false
 
 // Music
 let musicPlaying = false
@@ -70,6 +72,7 @@ selectNewPiece()
 // DOM elements
 let playBTN = document.getElementById('play')
 let resetBTN = document.getElementById('reset')
+let rossBTN = document.getElementById('ross')
 let table = document.getElementById('table')
 let nextPiece = document.getElementById('next-piece')
 let score = document.getElementById('score')
@@ -111,6 +114,11 @@ playBTN.addEventListener('click', () => {
 musicBTN.addEventListener('click', () => {
 	toggleMusic()
 	musicBTN.blur();
+})
+
+rossBTN.addEventListener('click', () => {
+	rossMode = !rossMode
+	rossBTN.blur()
 })
 
 resetBTN.addEventListener('click', () => {
@@ -235,7 +243,11 @@ function selectNewPiece() {
 	game.currentPiece = game.nextPiece
 	game.currentColor = game.nextColor
 	game.nextPiece = shapes[randomNumberShapes]
-	game.nextColor = colors[randomNumberShapes]
+	if (rossMode) {
+		game.nextColor = rossArray[randomNumberShapes]
+	} else {
+		game.nextColor = colors[randomNumberShapes]
+	}
 	game.positionY = 0 - game.currentPiece.length;
 	let pieceWidth = game.currentPiece[0].length;
 	if (game.positionX + pieceWidth > 10) {

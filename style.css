@@ -57,3 +57,17 @@ span {
 	background-color: purple;
 }
 
+.ross-geller {
+	background-image: url(./images/RossGeller2.jpg);
+	background-size: cover;
+}
+
+.bob-ross {
+	background-image: url(./images/BobRossBlock.png);
+	background-size: cover;
+}
+
+.rick-ross {
+	background-image: url(./images/RickRossBlock.png);
+	background-size: cover;
+}
