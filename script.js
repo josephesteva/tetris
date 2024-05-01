@@ -82,7 +82,7 @@ let myAudio = document.getElementById('audio')
 // myAudio.play()
 
 // Game Board
-for (let i = 0; i < 24; i++) {
+for (let i = 0; i < 20; i++) {
 	createRow();
 }
 
@@ -130,7 +130,7 @@ resetBTN.addEventListener('click', () => {
 	selectNewPiece()
 	selectNewPiece()
 	console.log(game.playing);
-	for (let i = 0; i < 24; i++) {
+	for (let i = 0; i < 20; i++) {
 		table.children[i].remove();
 		createRow();
 	}

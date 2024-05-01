@@ -9,6 +9,7 @@ body>div {
 
 body>h1 {
 	margin-left: 6em;
+	margin-bottom: 0em;
 }
 
 body>div>div {
@@ -27,8 +28,8 @@ table {
 
 td {
 	border: 1px solid black;
-	height: 1em;
-	width: .8em;
+	height: 1.5em;
+	width: 1.2em;
 }
 
 span {
