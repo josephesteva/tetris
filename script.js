@@ -34,6 +34,7 @@ let shapes = [
 		[1, 1, 1]
 	],
 ]
+
 let game = {
 	playing: false,
 	timer: 0,
@@ -44,8 +45,10 @@ let game = {
 	currentPiece: shapes[0],
 	currentColor: 'red',
 	positionY: -2,
-	positionX: 3
+	positionX: 4
 }
+
+let initialGameState = { ...game }
 
 // DOM elements
 let playBTN = document.getElementById('play')
@@ -67,19 +70,12 @@ playBTN.addEventListener('click', () => {
 })
 
 resetBTN.addEventListener('click', () => {
-	clearInterval(game.intervalId)
+	clearInterval(game.intervalId);
 	game = {
-		playing: false,
-		timer: 0,
-		speed: 500,
-		intervalId: setInterval(runGame, 500),
-		score: 0,
-		level: 1,
-		currentPiece: shapes[0],
-		currentColor: 'red',
-		positionY: -2,
-		positionX: 3
+		...initialGameState,
+		intervalId: setInterval(runGame, 500)
 	}
+	console.log(game.playing);
 	for (let i = 0; i < 24; i++) {
 		table.children[i].remove();
 		createRow();
@@ -91,6 +87,11 @@ resetBTN.addEventListener('click', () => {
 })
 
 window.addEventListener('keydown', (event) => {
+	if (event.key === 'p') {
+		game.playing = !game.playing
+		game.playing ? playBTN.innerText = 'Pause' : playBTN.innerText = 'Play';
+	}
+
 	if (!game.playing) {
 		return;
 	}
@@ -124,17 +125,12 @@ window.addEventListener('keydown', (event) => {
 		drawPiece()
 	}
 
-	// if (event.key === 'l') {
-	// 	game.level++
-	// 	adjustSpeed()
-	// }
-
 	if (event.key === ' ') {
-		let status = checkBottom()
+		let atBottom = checkBottom()
 		removePiece()
-		while (!status) {
+		while (!atBottom) {
 			useGravity()
-			status = checkBottom()
+			atBottom = checkBottom()
 		}
 		drawPiece()
 	}
@@ -159,10 +155,7 @@ const drawPiece = () => {
 	if (atBottom && atTop) {
 		game.playing = false;
 		alert('GAME OVER')
-		// clearInterval(game.intervalId)
-		return
-	}
-	if (atBottom) {
+	} else if (atBottom) {
 		checkLineClear()
 		selectNewPiece()
 	}
@@ -280,7 +273,6 @@ function rotate() {
 		}
 		newPiece.push(newRow)
 	}
-
 	let oldX = game.positionX
 	let oldPiece = game.currentPiece
 	game.currentPiece = newPiece
@@ -291,13 +283,9 @@ function rotate() {
 		if (game.positionX + game.currentPiece[0].length > 9) {
 			game.positionX = 10 - game.currentPiece[0].length
 		}
-		if (game.positionX < 0) {
-			game.currentPiece = oldPiece;
-			game.positionX = oldX;
-			return
-		}
 	}
-	if (table.children[game.positionY].children[game.positionX].classList.length) {
+	if (game.positionX < 0 ||
+		table.children[game.positionY].children[game.positionX].classList.length) {
 		game.currentPiece = oldPiece;
 		game.positionX = oldX;
 	}
