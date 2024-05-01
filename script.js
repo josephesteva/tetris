@@ -42,16 +42,30 @@ let game = {
 	intervalId: setInterval(runGame, 500),
 	score: 0,
 	level: 1,
-	currentPiece: shapes[0],
-	currentColor: 'red',
+	currentPiece: null,
+	currentColor: null,
 	nextPiece: shapes[0],
 	nextColor: 'red',
 	positionY: -2,
 	positionX: 4,
-	music: false
+}
+
+// Music
+let musicPlaying = false
+
+function toggleMusic() {
+	if (musicPlaying) {
+		myAudio.pause()
+	} else {
+		myAudio.play()
+	}
+	musicPlaying = !musicPlaying
+	musicPlaying ? musicBTN.innerText = '⏸ Pause' : musicBTN.innerText = '▶️ Play'
 }
 
 let initialGameState = { ...game }
+selectNewPiece()
+selectNewPiece()
 
 // DOM elements
 let playBTN = document.getElementById('play')
@@ -95,13 +109,7 @@ playBTN.addEventListener('click', () => {
 })
 
 musicBTN.addEventListener('click', () => {
-	if (game.music) {
-		myAudio.pause()
-	} else {
-		myAudio.play()
-	}
-	game.music = !game.music;
-	game.music ? musicBTN.innerText = '⏸ Pause' : musicBTN.innerText = '▶️ Play';
+	toggleMusic()
 	musicBTN.blur();
 })
 
@@ -111,6 +119,8 @@ resetBTN.addEventListener('click', () => {
 		...initialGameState,
 		intervalId: setInterval(runGame, 500)
 	}
+	selectNewPiece()
+	selectNewPiece()
 	console.log(game.playing);
 	for (let i = 0; i < 24; i++) {
 		table.children[i].remove();
@@ -129,13 +139,7 @@ window.addEventListener('keydown', (event) => {
 	}
 
 	if (event.key === 'm') {
-		if (game.music) {
-			myAudio.pause()
-		} else {
-			myAudio.play()
-		}
-		game.music = !game.music
-		game.music ? musicBTN.innerText = '⏸ Pause' : musicBTN.innerText = '▶️ Play'
+		toggleMusic()
 	}
 
 	if (!game.playing) {
@@ -322,6 +326,9 @@ function checkLineClear() {
 }
 
 function rotate() {
+	if (game.positionY < 0) {
+		return
+	}
 	let piece = game.currentPiece;
 	let newPiece = [];
 	for (i = 0; i < piece[0].length; i++) {
