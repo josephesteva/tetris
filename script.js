@@ -44,6 +44,8 @@ let game = {
 	level: 1,
 	currentPiece: shapes[0],
 	currentColor: 'red',
+	nextPiece: shapes[0],
+	nextColor: 'red',
 	positionY: -2,
 	positionX: 4
 }
@@ -54,12 +56,31 @@ let initialGameState = { ...game }
 let playBTN = document.getElementById('play')
 let resetBTN = document.getElementById('reset')
 let table = document.getElementById('table')
+let nextPiece = document.getElementById('next-piece')
 let score = document.getElementById('score')
 let level = document.getElementById('level')
 
 // Game Board
 for (let i = 0; i < 24; i++) {
 	createRow();
+}
+
+function createRow() {
+	let newRow = document.createElement('tr')
+	for (l = 0; l < 10; l++) {
+		let cell = document.createElement('td');
+		newRow.appendChild(cell);
+	}
+	table.prepend(newRow)
+}
+
+for (let i = 0; i < 5; i++) {
+	let newRow = document.createElement('tr')
+	for (j = 0; j < 5; j++) {
+		let cell = document.createElement('td')
+		newRow.appendChild(cell)
+	}
+	nextPiece.appendChild(newRow)
 }
 
 // Event Listeners
@@ -97,6 +118,7 @@ window.addEventListener('keydown', (event) => {
 	}
 
 	if (event.key === 'ArrowLeft'
+		&& game.positionY >= 0
 		&& game.positionX > 0
 		&& !checkLeft()) {
 		removePiece();
@@ -105,6 +127,7 @@ window.addEventListener('keydown', (event) => {
 	}
 
 	if (event.key === 'ArrowRight'
+		&& game.positionY >= 0
 		&& game.positionX < (10 - game.currentPiece[0].length)
 		&& !checkRight()
 	) {
@@ -150,6 +173,7 @@ const drawPiece = () => {
 			}
 		}
 	}
+	drawNextPiece()
 	let atBottom = checkBottom()
 	let atTop = checkTop()
 	if (atBottom && atTop) {
@@ -158,6 +182,35 @@ const drawPiece = () => {
 	} else if (atBottom) {
 		checkLineClear()
 		selectNewPiece()
+	}
+}
+
+function drawNextPiece() {
+	for (i = 1; i < 5; i++) {
+		for (j = 1; j < 5; j++) {
+			nextPiece.children[i].children[j].className = "";
+		}
+	}
+	let piece = game.nextPiece;
+	for (i = 0; i < piece.length; i++) {
+		for (j = 0; j < piece[0].length; j++) {
+			if (piece[i][j]) {
+				nextPiece.children[i + 1].children[j + 1].classList.add(game.nextColor)
+			}
+		}
+	}
+}
+
+function selectNewPiece() {
+	let randomNumberShapes = Math.floor(Math.random() * shapes.length)
+	game.currentPiece = game.nextPiece
+	game.currentColor = game.nextColor
+	game.nextPiece = shapes[randomNumberShapes]
+	game.nextColor = colors[randomNumberShapes]
+	game.positionY = 0 - game.currentPiece.length;
+	let pieceWidth = game.currentPiece[0].length;
+	if (game.positionX + pieceWidth > 10) {
+		game.positionX = 10 - pieceWidth
 	}
 }
 
@@ -240,26 +293,6 @@ function checkLineClear() {
 				createRow()
 			}
 		}
-	}
-}
-
-function createRow() {
-	let newRow = document.createElement('tr')
-	for (l = 0; l < 10; l++) {
-		let cell = document.createElement('td');
-		newRow.appendChild(cell);
-	}
-	table.prepend(newRow)
-}
-
-function selectNewPiece() {
-	let randomNumberShapes = Math.floor(Math.random() * shapes.length)
-	game.currentPiece = shapes[randomNumberShapes]
-	game.currentColor = colors[randomNumberShapes]
-	game.positionY = 0 - game.currentPiece.length;
-	let pieceWidth = game.currentPiece[0].length;
-	if (game.positionX + pieceWidth > 10) {
-		game.positionX = 10 - pieceWidth
 	}
 }
 

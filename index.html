@@ -10,15 +10,22 @@
       <div>
         <button id="play">Start</button>
         <button id="reset">Reset</button>
-        <!-- <p>Timer: <span id="timer">0</span></p> -->
         <p>Score: <span id="score">0</span> Level: <span id="level">1</span></p>
-        <table id="table"></table>
+        <!-- TODO: Clean up styling -->
+        <div style="display: flex">
+          <table id="table"></table>
+          <div style="margin-left: 2em">
+            <table id="next-piece"></table>
+            <p style="text-align: center">Next Piece</p>
+          </div>
+        </div>
       </div>
       <div>
         <h3>Controls</h3>
         <p>Left and Right arrow keys to move</p>
         <p>Up arrow to rotate</p>
         <p>Down arrow to increase fall rate</p>
+        <p>P to pause</p>
         <p>Space bar to drop piece</p>
         <!-- <div>⬅ Move Left</div>
 					<div>➡ Move Right</div>
