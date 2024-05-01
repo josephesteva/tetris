@@ -48,7 +48,6 @@ let game = {
 }
 
 // DOM elements
-let tableDiv = document.getElementById('table-div')
 let playBTN = document.getElementById('play')
 let resetBTN = document.getElementById('reset')
 let table = document.getElementById('table')
@@ -64,6 +63,7 @@ for (let i = 0; i < 24; i++) {
 playBTN.addEventListener('click', () => {
 	game.playing = !game.playing;
 	game.playing ? playBTN.innerText = 'Pause' : playBTN.innerText = 'Play';
+	(playBTN).blur();
 })
 
 resetBTN.addEventListener('click', () => {
@@ -80,17 +80,14 @@ resetBTN.addEventListener('click', () => {
 		positionY: -2,
 		positionX: 3
 	}
-	table.remove();
-	let newTable = document.createElement('table')
-	tableDiv.appendChild(newTable)
-	newTable.setAttribute("id", "table")
-	table = document.getElementById('table')
 	for (let i = 0; i < 24; i++) {
+		table.children[i].remove();
 		createRow();
 	}
 	playBTN.innerText = 'Start'
 	score.innerText = 0;
 	level.innerText = 1;
+	(resetBTN).blur()
 })
 
 window.addEventListener('keydown', (event) => {
@@ -122,7 +119,6 @@ window.addEventListener('keydown', (event) => {
 	}
 
 	if (event.key === 'ArrowUp') {
-		console.log('up');
 		removePiece()
 		rotate()
 		drawPiece()
@@ -133,7 +129,7 @@ window.addEventListener('keydown', (event) => {
 	// 	adjustSpeed()
 	// }
 
-	if (event.key === 'd') {
+	if (event.key === ' ') {
 		let status = checkBottom()
 		removePiece()
 		while (!status) {
@@ -217,7 +213,6 @@ function checkBottom() {
 function checkRight() {
 	for (i = 0; i < game.currentPiece.length; i++) {
 		if (table.children[game.positionY + i].children[game.positionX + game.currentPiece[0].length].classList.length) {
-			console.log('right collision');
 			return true
 		}
 	}
@@ -227,7 +222,6 @@ function checkRight() {
 function checkLeft() {
 	for (i = 0; i < game.currentPiece.length; i++) {
 		if (table.children[game.positionY + i].children[game.positionX - 1].classList.length) {
-			console.log('left collision');
 			return true
 		}
 	}
@@ -248,7 +242,6 @@ function checkLineClear() {
 			if (!square.classList.length) {
 				break
 			} else if (j === 9 && square.classList.length) {
-				console.log('Line', game.positionY + i + 1, 'should be removed');
 				table.children[game.positionY + i].remove();
 				increaseScore()
 				createRow()
@@ -293,21 +286,18 @@ function rotate() {
 	game.currentPiece = newPiece
 	for (i = 0; i < game.currentPiece[0].length; i++) {
 		if (table.children[game.positionY].children[game.positionX + i].classList.length) {
-			console.log('conflict');
 			game.positionX--
 		}
 		if (game.positionX + game.currentPiece[0].length > 9) {
 			game.positionX = 10 - game.currentPiece[0].length
 		}
 		if (game.positionX < 0) {
-			console.log('off board');
 			game.currentPiece = oldPiece;
 			game.positionX = oldX;
 			return
 		}
 	}
 	if (table.children[game.positionY].children[game.positionX].classList.length) {
-		console.log('doesnt fit');
 		game.currentPiece = oldPiece;
 		game.positionX = oldX;
 	}
@@ -320,24 +310,19 @@ function increaseScore() {
 }
 
 function setLevel() {
-	game.level = Math.floor((game.score / 5) + 1)
-	level.innerText = game.level
-	adjustSpeed()
+	let newLevel = Math.floor((game.score / 5) + 1)
+	if (newLevel !== game.level) {
+		game.level = newLevel
+		level.innerText = game.level
+		adjustSpeed()
+	}
 }
 
-
 function adjustSpeed() {
-	let newSpeed = (500 * (0.91 ** (game.level - 1)))
-	if (newSpeed !== game.speed) {
-		console.log('level up');
-		console.log(newSpeed);
-		game.speed = newSpeed
-		console.log(newSpeed);
-		console.log(game.intervalId);
-		clearInterval(game.intervalId)
-		game.intervalId = setInterval(runGame, game.speed)
-	}
-	return
+	game.speed = (500 * (0.91 ** (game.level - 1)))
+	console.log(game.speed);
+	clearInterval(game.intervalId)
+	game.intervalId = setInterval(runGame, game.speed)
 }
 
 // Time
