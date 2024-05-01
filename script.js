@@ -47,7 +47,8 @@ let game = {
 	nextPiece: shapes[0],
 	nextColor: 'red',
 	positionY: -2,
-	positionX: 4
+	positionX: 4,
+	music: false
 }
 
 let initialGameState = { ...game }
@@ -59,6 +60,9 @@ let table = document.getElementById('table')
 let nextPiece = document.getElementById('next-piece')
 let score = document.getElementById('score')
 let level = document.getElementById('level')
+let musicBTN = document.getElementById('music')
+let myAudio = document.getElementById('audio')
+// myAudio.play()
 
 // Game Board
 for (let i = 0; i < 24; i++) {
@@ -87,7 +91,18 @@ for (let i = 0; i < 5; i++) {
 playBTN.addEventListener('click', () => {
 	game.playing = !game.playing;
 	game.playing ? playBTN.innerText = 'Pause' : playBTN.innerText = 'Play';
-	(playBTN).blur();
+	playBTN.blur();
+})
+
+musicBTN.addEventListener('click', () => {
+	if (game.music) {
+		myAudio.pause()
+	} else {
+		myAudio.play()
+	}
+	game.music = !game.music;
+	game.music ? musicBTN.innerText = '⏸ Pause' : musicBTN.innerText = '▶️ Play';
+	musicBTN.blur();
 })
 
 resetBTN.addEventListener('click', () => {
@@ -104,13 +119,23 @@ resetBTN.addEventListener('click', () => {
 	playBTN.innerText = 'Start'
 	score.innerText = 0;
 	level.innerText = 1;
-	(resetBTN).blur()
+	resetBTN.blur()
 })
 
 window.addEventListener('keydown', (event) => {
 	if (event.key === 'p') {
 		game.playing = !game.playing
 		game.playing ? playBTN.innerText = 'Pause' : playBTN.innerText = 'Play';
+	}
+
+	if (event.key === 'm') {
+		if (game.music) {
+			myAudio.pause()
+		} else {
+			myAudio.play()
+		}
+		game.music = !game.music
+		game.music ? musicBTN.innerText = '⏸ Pause' : musicBTN.innerText = '▶️ Play'
 	}
 
 	if (!game.playing) {
