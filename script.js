@@ -117,8 +117,9 @@ musicBTN.addEventListener('click', () => {
 })
 
 rossBTN.addEventListener('click', () => {
-	rossMode = !rossMode
-	rossBTN.blur()
+	rossMode = !rossMode;
+	rossMode ? rossBTN.innerText = 'Color Mode' : rossBTN.innerText = 'Ross Mode';
+	rossBTN.blur();
 })
 
 resetBTN.addEventListener('click', () => {
@@ -127,8 +128,8 @@ resetBTN.addEventListener('click', () => {
 		...initialGameState,
 		intervalId: setInterval(runGame, 500)
 	}
-	selectNewPiece()
-	selectNewPiece()
+	selectNewPiece();
+	selectNewPiece();
 	console.log(game.playing);
 	for (let i = 0; i < 20; i++) {
 		table.children[i].remove();

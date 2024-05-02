@@ -6,38 +6,41 @@
     <title>TetRoss</title>
   </head>
   <body>
-    <h1>TetRoss</h1>
-    <div>
-      <div>
-        <button id="play">Start</button>
-        <button id="reset">Reset</button>
-        <button id="ross">Ross Mode</button>
-        <p>Score: <span id="score">0</span> Level: <span id="level">1</span></p>
-        <!-- TODO: Clean up styling -->
-        <div style="display: flex">
-          <table id="table"></table>
-          <div style="margin-left: 2em">
-            <table id="next-piece"></table>
-            <p style="text-align: center">Next Piece</p>
+    <div id="game-container">
+      <h1>TetRoss</h1>
+      <div id="game">
+        <div id="gameboard">
+          <button id="play">Start</button>
+          <button id="reset">Reset</button>
+          <button id="ross">Ross Mode</button>
+          <!-- TODO: Clean up styling -->
+          <div style="display: flex">
+            <table id="table"></table>
+            <div id="game-info">
+              <table id="next-piece"></table>
+              <p>Next Piece</p>
+              <h3>Score: <span id="score">0</span></h3>
+              <h3>Level: <span id="level">1</span></h3>
+            </div>
           </div>
         </div>
-      </div>
-      <div>
-        <h3>Music</h3>
-        <button id="music">▶️ Play</button>
-        <audio id="audio" loop src="./music/Tetris.mp3"></audio>
-        <h3>Controls</h3>
-        <p>Left and Right arrow keys to move</p>
-        <p>Up arrow to rotate</p>
-        <p>Down arrow to increase fall rate</p>
-        <p>P to pause</p>
-        <p>Space bar to drop piece</p>
-        <p>M to start and stop music</p>
-        <!-- <div>⬅ Move Left</div>
-					<div>➡ Move Right</div>
-					<div>🔼 Rotate</div>
-					<div>🔽 Speed Block Fall</div>
-					<div>"d" Drop Block</div> -->
+        <div>
+          <h3>Music</h3>
+          <button id="music">▶️ Play</button>
+          <audio id="audio" loop src="./music/Tetris.mp3"></audio>
+          <h3>Controls</h3>
+          <p>Left and Right arrow keys to move</p>
+          <p>Up arrow to rotate</p>
+          <p>Down arrow to increase fall rate</p>
+          <p>P to pause</p>
+          <p>Space bar to drop piece</p>
+          <p>M to start and stop music</p>
+          <!-- <div>⬅ Move Left</div>
+						<div>➡ Move Right</div>
+						<div>🔼 Rotate</div>
+						<div>🔽 Speed Block Fall</div>
+						<div>"d" Drop Block</div> -->
+        </div>
       </div>
     </div>
   </body>
