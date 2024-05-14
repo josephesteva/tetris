@@ -161,7 +161,7 @@ leftBTN.addEventListener('click', () => {
 rightBTN.addEventListener('click', () => {
 	if (game.playing
 		&& game.positionY >= 0
-		&& game.positionX > 0
+		&& game.positionX >= 0
 		&& !checkRight()) {
 		removePiece();
 		game.positionX++;

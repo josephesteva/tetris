@@ -112,7 +112,7 @@ td {
 
 #mobile-left, #mobile-right {
 	background-color: white;
-	width: 72px;
+	width: 60px;
 	height: 72px;
 	margin: 0;
 }
@@ -125,7 +125,7 @@ td {
 
 #mobile-rotate, #mobile-down {
 	background-color: white;
-	width: 80px;
+	width: 60px;
 	height: 34px;
 	margin: 0;
 }
@@ -139,6 +139,20 @@ td {
 }
 
 @media (max-width:840px) {
+	td {
+		height: 1em;
+		width: .8em;
+	}
+
+	button {
+		margin: 0 0 5px 0;
+		font-size: small;
+	}
+
+	#gameboard {
+		margin: 0
+	}
+
 	#controls {
 		display: none;
 	}
