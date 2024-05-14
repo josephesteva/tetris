@@ -62,7 +62,7 @@ function toggleMusic() {
 		myAudio.play()
 	}
 	musicPlaying = !musicPlaying
-	musicPlaying ? musicBTN.innerText = '⏸ Pause' : musicBTN.innerText = '▶️ Play'
+	musicPlaying ? musicBTN.innerText = '⏸ Pause Music' : musicBTN.innerText = '▶️ Play Music'
 }
 
 let initialGameState = { ...game }
@@ -73,6 +73,11 @@ selectNewPiece()
 let playBTN = document.getElementById('play')
 let resetBTN = document.getElementById('reset')
 let rossBTN = document.getElementById('ross')
+let leftBTN = document.getElementById('mobile-left')
+let rightBTN = document.getElementById('mobile-right')
+let rotateBTN = document.getElementById('mobile-rotate')
+let downBTN = document.getElementById('mobile-down')
+let dropBTN = document.getElementById('mobile-drop')
 let table = document.getElementById('table')
 let nextPiece = document.getElementById('next-piece')
 let score = document.getElementById('score')
@@ -139,6 +144,57 @@ resetBTN.addEventListener('click', () => {
 	score.innerText = 0;
 	level.innerText = 1;
 	resetBTN.blur()
+})
+
+// mobile controls
+leftBTN.addEventListener('click', () => {
+	if (game.playing
+		&& game.positionY >= 0
+		&& game.positionX > 0
+		&& !checkLeft()) {
+		removePiece();
+		game.positionX--;
+		drawPiece()
+	}
+})
+
+rightBTN.addEventListener('click', () => {
+	if (game.playing
+		&& game.positionY >= 0
+		&& game.positionX > 0
+		&& !checkRight()) {
+		removePiece();
+		game.positionX++;
+		drawPiece()
+	}
+})
+
+downBTN.addEventListener('click', () => {
+	if (game.playing) {
+		removePiece()
+		useGravity()
+		drawPiece()
+	}
+})
+
+rotateBTN.addEventListener('click', () => {
+	if (game.playing) {
+		removePiece()
+		rotate()
+		drawPiece()
+	}
+})
+
+dropBTN.addEventListener('click', () => {
+	if (game.playing) {
+		let atBottom = checkBottom()
+		removePiece()
+		while (!atBottom) {
+			useGravity()
+			atBottom = checkBottom()
+		}
+		drawPiece()
+	}
 })
 
 window.addEventListener('keydown', (event) => {

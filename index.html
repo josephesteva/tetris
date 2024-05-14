@@ -1,8 +1,10 @@
 <html>
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="script.js" defer></script>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" />
     <title>TetRoss</title>
   </head>
   <body>
@@ -13,9 +15,20 @@
           <button id="play">Start</button>
           <button id="reset">Reset</button>
           <button id="ross">Ross Mode</button>
+          <button id="music">▶️ Play Music</button>
+          <audio id="audio" loop src="./music/Tetris.mp3"></audio>
           <!-- TODO: Clean up styling -->
           <div style="display: flex">
-            <table id="table"></table>
+            <div>
+              <table id="table"></table>
+              <div id="mobile-controls">
+                <button id="mobile-left" class="fa fa-arrow-left"></button>
+                <button id="mobile-rotate" class="fa fa-repeat"></button>
+                <button id="mobile-right" class="fa fa-arrow-right"></button>
+                <button id="mobile-down" class="fa fa-arrow-down"></button>
+                <button id="mobile-drop" class="fa fa-long-arrow-down"></button>
+              </div>
+            </div>
             <div id="game-info">
               <table id="next-piece"></table>
               <p>Next Piece</p>
@@ -24,10 +37,7 @@
             </div>
           </div>
         </div>
-        <div>
-          <h3>Music</h3>
-          <button id="music">▶️ Play</button>
-          <audio id="audio" loop src="./music/Tetris.mp3"></audio>
+        <div id="controls">
           <h3>Controls</h3>
           <p>Left and Right arrow keys to move</p>
           <p>Up arrow to rotate</p>

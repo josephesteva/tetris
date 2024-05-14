@@ -42,10 +42,6 @@ td {
 	width: 1.2em;
 }
 
-/* span {
-	margin-right: 1em;
-} */
-
 #game-container {
 	display: flex;
 	flex-direction: column;
@@ -67,8 +63,9 @@ td {
 	align-items: center;
 }
 
-
-
+#music {
+	margin-left: 34px;
+}
 
 .red {
 	background-color: red;
@@ -105,4 +102,13 @@ td {
 .rick-ross {
 	background-image: url(./images/RickRossBlock.png);
 	background-size: cover;
+}
+
+@media (max-width:840px) {
+
+	#controls {
+		display: none;
+	}
+
+
 }
