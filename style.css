@@ -2,19 +2,6 @@
 	--base-color: #add8e6;
 	--button-color: #5a84d3;
 	--table-color: #0f5d7083;
-	--base-blue: #add8e6;
-	--table-blue: #0f5d7083;
-	--button-blue: #5a84d3;
-	--base-green: #97da9a;
-	--button-green: #21bd0d;
-	--table-green: #156128;
-	--base-purple: #d398f3;
-	--button-purple: #b33af5;
-	--table-purple: #8950a8;
-	--base-red: #f08e8a;
-	--button-red: #cf3d23;
-	--table-red: #8a3b2c;
-
 }
 
 body {
@@ -84,27 +71,32 @@ td {
 
 #music {
 	margin-left: 34px;
+	position: absolute
 }
 
-#blue, #green, #red, #purple {
+#theme {
+	margin-top: 24px;
+}
+
+#blue-button, #green-button, #purple-button, #red-button {
 	margin-bottom: 4px;
 	width: 60px;
 }
 
-#blue {
+#blue-button {
 	background-color: #5a84d3;
 }
 
-#green {
+#green-button {
 	background-color: #21bd0d;
 }
 
-#red {
-	background-color: #cf3d23;
+#purple-button {
+	background-color: #b33af5;
 }
 
-#purple {
-	background-color: #b33af5;
+#red-button {
+	background-color: #cf3d23;
 }
 
 .red {
