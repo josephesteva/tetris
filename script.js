@@ -84,6 +84,10 @@ let score = document.getElementById('score')
 let level = document.getElementById('level')
 let musicBTN = document.getElementById('music')
 let myAudio = document.getElementById('audio')
+let blueBtn = document.getElementById('blue')
+let greenBtn = document.getElementById('green')
+let redBtn = document.getElementById('red')
+let purpleBtn = document.getElementById('purple')
 // myAudio.play()
 
 // Game Board
@@ -251,6 +255,30 @@ window.addEventListener('keydown', (event) => {
 		}
 		drawPiece()
 	}
+})
+
+blueBtn.addEventListener('click', function () {
+	document.documentElement.style.setProperty('--base-color', '#add8e6')
+	document.documentElement.style.setProperty('--button-color', '#5a84d3')
+	document.documentElement.style.setProperty('--table-color', '#0f5d7083')
+})
+
+greenBtn.addEventListener('click', function () {
+	document.documentElement.style.setProperty('--base-color', '#97da9a')
+	document.documentElement.style.setProperty('--button-color', '#21bd0d')
+	document.documentElement.style.setProperty('--table-color', '#156128')
+})
+
+redBtn.addEventListener('click', function () {
+	document.documentElement.style.setProperty('--base-color', '#f08e8a')
+	document.documentElement.style.setProperty('--button-color', '#cf3d23')
+	document.documentElement.style.setProperty('--table-color', '#8a3b2c')
+})
+
+purpleBtn.addEventListener('click', function () {
+	document.documentElement.style.setProperty('--base-color', '#d398f3')
+	document.documentElement.style.setProperty('--button-color', '#b33af5')
+	document.documentElement.style.setProperty('--table-color', '#8950a8')
 })
 
 // Game functions

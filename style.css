@@ -1,5 +1,24 @@
+:root {
+	--base-color: #add8e6;
+	--button-color: #5a84d3;
+	--table-color: #0f5d7083;
+	--base-blue: #add8e6;
+	--table-blue: #0f5d7083;
+	--button-blue: #5a84d3;
+	--base-green: #97da9a;
+	--button-green: #21bd0d;
+	--table-green: #156128;
+	--base-purple: #d398f3;
+	--button-purple: #b33af5;
+	--table-purple: #8950a8;
+	--base-red: #f08e8a;
+	--button-red: #cf3d23;
+	--table-red: #8a3b2c;
+
+}
+
 body {
-	background-color: lightblue;
+	background-color: var(--base-color);
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
@@ -24,7 +43,7 @@ button {
 	font-size: 1em;
 	font-weight: bold;
 	border-radius: 6px;
-	background-color: rgb(90, 132, 211);
+	background-color: var(--button-color);
 	padding: .25em;
 	margin-right: .5em;
 	margin-bottom: 2em;
@@ -33,7 +52,7 @@ button {
 table {
 	border: 2px black solid;
 	border-spacing: .5px;
-	background-color: #09435283;
+	background-color: var(--table-color);
 }
 
 td {
@@ -65,6 +84,27 @@ td {
 
 #music {
 	margin-left: 34px;
+}
+
+#blue, #green, #red, #purple {
+	margin-bottom: 4px;
+	width: 60px;
+}
+
+#blue {
+	background-color: #5a84d3;
+}
+
+#green {
+	background-color: #21bd0d;
+}
+
+#red {
+	background-color: #cf3d23;
+}
+
+#purple {
+	background-color: #b33af5;
 }
 
 .red {
